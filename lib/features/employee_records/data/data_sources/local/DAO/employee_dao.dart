@@ -1,20 +1,20 @@
 
 import 'package:floor/floor.dart';
-
+import'dart:async';
 import '../../../models/employee_model.dart';
 
 @dao
 abstract class EmployeeDao {
 
   @Insert()
-  Future<void> insertEmployees(EmployeeModel employee);
+  FutureOr<void> insertEmployees(EmployeeModel employee);
 
   @Update()
-  Future<void> updateEmployees(EmployeeModel employee);
+  FutureOr<void> updateEmployees(EmployeeModel employee);
 
   @delete
-  Future<void> deleteEmployees(EmployeeModel employeeModel);
+  FutureOr<void> deleteEmployees(EmployeeModel employeeModel);
 
   @Query('SELECT * FROM employee')
-  Future<List<EmployeeModel>> getEmployeesList();
+  FutureOr<List<EmployeeModel>> getEmployeesList();
 }

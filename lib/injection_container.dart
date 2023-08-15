@@ -7,11 +7,11 @@ import 'features/employee_records/domain/usecase/remove_employee.dart';
 import 'features/employee_records/domain/usecase/save_employee.dart';
 import 'features/employee_records/domain/usecase/update_employee.dart';
 import 'features/employee_records/presentation/bloc/local_employee_bloc.dart';
-
+import'dart:async';
 
 final sl = GetIt.instance;
 
-Future<void> initializeDependencies() async {
+FutureOr<void> initializeDependencies() async {
 
   final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
   sl.registerSingleton<AppDatabase>(database);

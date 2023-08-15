@@ -199,7 +199,7 @@ class _AddEmployeeState extends State<AddEmployees> {
                     );
                     }
                     else{
-                      _scaffoldKey.currentState!.showSnackBar(const SnackBar(content: Text("Please fill required field")));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill required field")));
                     }
                   },
                   child: const Text("Save")),
@@ -238,7 +238,7 @@ class _AddEmployeeState extends State<AddEmployees> {
         });
   }
 
-  Future<void> showDateCalender() {
+  showDateCalender() {
     return showDialog(
       context: context,
       builder: (context) {

@@ -46,7 +46,7 @@ class _EditEmployeeState extends State<EditEmployees> {
   ];
   @override
   void initState() {
-    Future.delayed(Duration.zero);
+
 
 
     addEmpNameController.text=widget.employeeEntity!.name!;
@@ -219,14 +219,14 @@ class _EditEmployeeState extends State<EditEmployees> {
                     if(addEmpNameController.text.isNotEmpty&&_selected!.isNotEmpty){
                       final addEmp = EmployeeEntity(
                           name: addEmpNameController.text, role: _selected,fromDate:_fromDate ?? DateFormat("dd MMM yyyy").format(_focusedDay),toDate:_toDate ?? "");
-                      _onAddEmployee(context, addEmp);
+                      _onUpdateEmployee(context, addEmp);
                       const EmployeeList().build(context);
                       Navigator.pop(
                         context,
                       );
                     }
                     else{
-                      _scaffoldKey.currentState!.showSnackBar(const SnackBar(content: Text("Please fill required field")));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill required field")));
                     }
 
                     Navigator.pop(context,);
@@ -265,7 +265,7 @@ class _EditEmployeeState extends State<EditEmployees> {
         });
   }
 
-  Future<void> showDateCalender() {
+   showDateCalender() {
     return showDialog(
       context: context,
       builder: (context) {
@@ -486,14 +486,10 @@ class _EditEmployeeState extends State<EditEmployees> {
     Navigator.pop(context);
   }
 
-  void _onAddEmployee(BuildContext context, EmployeeEntity employee) {
-    BlocProvider.of<LocalEmployeeBloc>(context).add(SaveEmployee(employee));
+
+  void _onUpdateEmployee(BuildContext context, EmployeeEntity employee) {
+    BlocProvider.of<LocalEmployeeBloc>(context).add(UpdateEmployee(employee));
   }
 
 }
-/*
-  void _onArticlePressed(BuildContext context, ArticleEntity article) {
-    Navigator.pushNamed(context, '/ArticleDetails', arguments: article);
-  }
 
- */

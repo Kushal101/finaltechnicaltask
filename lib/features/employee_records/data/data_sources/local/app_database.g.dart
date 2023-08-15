@@ -42,7 +42,7 @@ class _$AppDatabaseBuilder {
   }
 
   /// Creates the database and initializes it.
-  Future<AppDatabase> build() async {
+  FutureOr<AppDatabase> build() async {
     final path = name != null
         ? await sqfliteDatabaseFactory.getDatabasePath(name!)
         : ':memory:';
@@ -63,7 +63,7 @@ class _$AppDatabase extends AppDatabase {
 
   EmployeeDao? _employeeDAOInstance;
 
-  Future<sqflite.Database> open(
+  FutureOr<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
     Callback? callback,
@@ -150,7 +150,7 @@ class _$EmployeeDao extends EmployeeDao {
   final DeletionAdapter<EmployeeModel> _employeeModelDeletionAdapter;
 
   @override
-  Future<List<EmployeeModel>> getEmployeesList() async {
+  FutureOr<List<EmployeeModel>> getEmployeesList() async {
     return _queryAdapter.queryList('SELECT * FROM employee',
         mapper: (Map<String, Object?> row) => EmployeeModel(
             id: row['id'] as int?,
@@ -161,19 +161,19 @@ class _$EmployeeDao extends EmployeeDao {
   }
 
   @override
-  Future<void> insertEmployees(EmployeeModel employee) async {
+  FutureOr<void> insertEmployees(EmployeeModel employee) async {
     await _employeeModelInsertionAdapter.insert(
         employee, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> updateEmployees(EmployeeModel employee) async {
+  FutureOr<void> updateEmployees(EmployeeModel employee) async {
     await _employeeModelUpdateAdapter.update(
         employee, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> deleteEmployees(EmployeeModel employeeModel) async {
+  FutureOr<void> deleteEmployees(EmployeeModel employeeModel) async {
     await _employeeModelDeletionAdapter.delete(employeeModel);
   }
 }

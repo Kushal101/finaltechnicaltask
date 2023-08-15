@@ -8,7 +8,7 @@ import 'config/routes/app_routes.dart';
 import 'config/theme/apps_theme.dart';
 import 'features/employee_records/presentation/bloc/local_employee_bloc.dart';
 import 'injection_container.dart';
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
    await initializeDependencies();
   runApp(const MyApp());

@@ -3,7 +3,7 @@
 import '../../../../core/usecase/usecase.dart';
 import '../entities/employee.dart';
 import '../repository/employee_repository.dart';
-
+import'dart:async';
 class SaveEmployeeUseCase implements UseCase<void,EmployeeEntity>{
 
   final EmployeeRepository _employeeRepository;
@@ -11,7 +11,7 @@ class SaveEmployeeUseCase implements UseCase<void,EmployeeEntity>{
   SaveEmployeeUseCase(this._employeeRepository);
 
   @override
-  Future<void> call({EmployeeEntity ? params}) {
+  FutureOr<void> call({EmployeeEntity ? params}) {
     return _employeeRepository.saveEmployee(params!);
   }
 

@@ -37,10 +37,7 @@ onTap: _onTap,
 
 
   Widget _buildTitleAndDescription() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7),
-        child: Column(
+    return  Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,15 +50,12 @@ onTap: _onTap,
             ),
 
             // Description
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
+            Text(
                   employeeEntity!.role ?? '',
                   maxLines : 1,
                 ),
-              ),
-            ),
+
+
 
             // Datetime
             Row(
@@ -93,9 +87,9 @@ onTap: _onTap,
               ],
             ),
           ],
-        ),
-      ),
-    );
+        );
+
+
   }
 
 

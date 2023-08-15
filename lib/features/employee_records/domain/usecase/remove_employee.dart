@@ -1,4 +1,4 @@
-
+import'dart:async';
 import '../../../../core/usecase/usecase.dart';
 import '../entities/employee.dart';
 import '../repository/employee_repository.dart';
@@ -10,7 +10,7 @@ class RemoveEmployeeUseCase implements UseCase<void,EmployeeEntity>{
   RemoveEmployeeUseCase(this._employeeRepository);
 
   @override
-  Future<void> call({EmployeeEntity ? params}) {
+  FutureOr<void> call({EmployeeEntity ? params}) {
     return _employeeRepository.removeEmployee(params!);
   }
 
