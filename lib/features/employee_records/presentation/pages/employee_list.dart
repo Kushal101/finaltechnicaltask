@@ -26,13 +26,13 @@ class EmployeeList extends HookWidget {
           Positioned(
             top:MediaQuery.of(context).size.height*0.8,
             child:
-          bottomContainer(context),)]),
+            bottomContainer(context),)]),
         floatingActionButton: FloatingActionButton.small(onPressed: (){
           _onButtonPressed(context);
-          },
+        },
           child: Icon(Icons.add),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5)
+              borderRadius: BorderRadius.circular(5)
           ),
         ),
       ),
@@ -63,12 +63,12 @@ class EmployeeList extends HookWidget {
     if (employees.isEmpty) {
       return Center(
           child: Image.asset("assets/no_records_found/no_records_found.png")
-            
-          );
+
+      );
     }
 
     return ListView.separated(
-      padding: EdgeInsets.only(bottom:50 ),
+      padding: const EdgeInsets.only(bottom:50 ),
       shrinkWrap: true,
       itemCount: employees.length,
       itemBuilder: (context, index) {
@@ -76,64 +76,68 @@ class EmployeeList extends HookWidget {
         bool _isUndoPressed = false;
         bool isDeleting;
         return  Dismissible(
-          key: Key(item.toString()),
-          background: Container(
-            padding: EdgeInsets.only(right:20),
-              color: Colors.red,
-          child:const Align(
-            alignment: Alignment.centerRight,
-            child:
-              Icon( Icons.delete_outline_outlined,color:Colors.white))),
+            key: Key(item.toString()),
+            background: Container(
+                padding: EdgeInsets.only(right:20),
+                color: Colors.red,
+                child:const Align(
+                    alignment: Alignment.centerRight,
+                    child:
+                    Icon( Icons.delete_outline_outlined,color:Colors.white))),
 
-          direction: DismissDirection.endToStart,
-          onDismissed: (direction) {
+            direction: DismissDirection.endToStart,
+            onDismissed: (direction) {
 
-             var deleteItem= employees.removeAt(index);
-             _onRemoveEmployee(context, deleteItem);
-               isDeleting=true;
-            ScaffoldMessenger
-                .of(context)
-                .showSnackBar(SnackBar(content: const Text("Employee Data has been deleted"),
-            action: SnackBarAction(
-            label: "UNDO",
-            onPressed: () {
-            _isUndoPressed = true;
+              var deleteItem= employees.removeAt(index);
+              _onRemoveEmployee(context, deleteItem);
+              isDeleting=true;
 
-            isDeleting = false;
-            employees.insert(
-            index,deleteItem);
-           _onAddEmployee(context, deleteItem);
-            })));
-          },
-          child: TileWidget(
-          employeeEntity: employees[index],
-          isRemovable: true,
-            onArticlePressed:(employeeEntity)=> _onTilePressed(context,employeeEntity),
+              ScaffoldMessenger
+                  .of(context)
+                  .showSnackBar(SnackBar(content: const Text("Employee Data has been deleted"),
+                  action: SnackBarAction(
+                      label: "UNDO",
+                      onPressed: () {
+                        _isUndoPressed = true;
+
+                        isDeleting = false;
+                        employees.insert(
+                            index,deleteItem);
+                        _onAddEmployee(context, deleteItem);
 
 
-        ));
+                      })));
+            },
+            child: TileWidget(
+              employeeEntity: employees[index],
+              isRemovable: true,
+              onArticlePressed:(employeeEntity)=> _onTilePressed(context,employeeEntity),
+
+
+            ));
       }, separatorBuilder: (BuildContext context, int index) {
-        return const Divider();
+      return const Divider();
     },
     );
 
 
   }
-Widget bottomContainer(context){
-  return Container(
-    padding: EdgeInsets.only(left: 20),
-    width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height*0.085,
-      color:Theme.of(context).inputDecorationTheme.border?.borderSide.color,
-      child:const Align(
-        alignment: Alignment.centerLeft,
-          child:Text("Swipe left to delete"))
-  ) ;
-}
+  Widget bottomContainer(context){
+    return Container(
+        padding: EdgeInsets.only(left: 20),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height*0.085,
+        color:Theme.of(context).inputDecorationTheme.border?.borderSide.color,
+        child:const Align(
+            alignment: Alignment.centerLeft,
+            child:Text("Swipe left to delete"))
+    ) ;
+  }
 
 
   void _onRemoveEmployee(BuildContext context, EmployeeEntity employee) {
     BlocProvider.of<LocalEmployeeBloc>(context).add(RemoveEmployee(employee));
+
   }
 
   void _onAddEmployee(BuildContext context, EmployeeEntity employee) {

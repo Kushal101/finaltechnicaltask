@@ -1,3 +1,7 @@
+
+
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,13 +49,13 @@ class _AddEmployeeState extends State<AddEmployees> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
+      onTap:()=>FocusScope.of(context).requestFocus(FocusNode()),
+      child: Scaffold(
           key:_scaffoldKey,
           resizeToAvoidBottomInset: false,
           appBar: _buildAppBar(),
-          body: _buildAddEmployee(),
-        ));
+          body: _buildAddEmployee()),
+    );
   }
 
   PreferredSizeWidget _buildAppBar() {
@@ -67,6 +71,7 @@ class _AddEmployeeState extends State<AddEmployees> {
         margin: EdgeInsets.all(20),
         height: 40,
         child: TextFormField(
+
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.person_outline),
             contentPadding: EdgeInsets.only(top: 15, left: 15),
@@ -121,7 +126,16 @@ class _AddEmployeeState extends State<AddEmployees> {
       ),
       Row(children: [
         InkWell(
-          onTap: () => showDateCalender(),
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+            Future.delayed(const Duration(milliseconds: 500), () {
+              setState(() {
+
+                showDateCalender();
+              });
+
+            });
+          },
           child: Container(
             margin: const EdgeInsets.only(left: 20, bottom: 20),
             height: 40,
@@ -149,8 +163,15 @@ class _AddEmployeeState extends State<AddEmployees> {
         Spacer(),
         InkWell(
           onTap: () {
-            isNoDateDialogBoxOpen = true;
-            showDateCalender();
+            FocusScope.of(context).requestFocus(FocusNode());
+            Future.delayed(const Duration(milliseconds: 600), () {
+              setState(() {
+                isNoDateDialogBoxOpen = true;
+                showDateCalender();
+              });
+
+            });
+
           },
           child: Container(
             margin: const EdgeInsets.only(right: 20, bottom: 20),
@@ -171,7 +192,7 @@ class _AddEmployeeState extends State<AddEmployees> {
                 margin: const EdgeInsets.only(
                   left: 15,
                 ),
-                child: const Text("No date"),
+                child: Text(_toDate??"No date"),
               ),
             ]),
           ),
@@ -190,13 +211,12 @@ class _AddEmployeeState extends State<AddEmployees> {
               child: ElevatedButton(
                   onPressed: () async {
                     if(addEmpNameController.text.isNotEmpty&&_selected!.isNotEmpty){
-                    final addEmp = EmployeeEntity(
-                        name: addEmpNameController.text, role: _selected,fromDate:_fromDate ?? DateFormat("dd MMM yyyy").format(_focusedDay),toDate:_toDate ?? "");
-                    _onAddEmployee(context, addEmp);
-                    const EmployeeList().build(context);
-                    Navigator.pop(
-                      context,
-                    );
+                      final addEmp = EmployeeEntity(
+                          name: addEmpNameController.text, role: _selected,fromDate:_fromDate ?? DateFormat("dd MMM yyyy").format(_focusedDay),toDate:_toDate ?? "");
+                      _onAddEmployee(context, addEmp);
+
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EmployeeList()));
+
                     }
                     else{
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill required field")));
@@ -217,7 +237,7 @@ class _AddEmployeeState extends State<AddEmployees> {
 
             alignment: Alignment.center,
             child: ListView.separated(
-              shrinkWrap: true,
+                shrinkWrap: true,
                 itemCount: empRole.length,
                 separatorBuilder: (context, int) {
                   return const Divider();
@@ -239,6 +259,7 @@ class _AddEmployeeState extends State<AddEmployees> {
   }
 
   showDateCalender() {
+
     return showDialog(
       context: context,
       builder: (context) {
@@ -255,13 +276,13 @@ class _AddEmployeeState extends State<AddEmployees> {
                         Padding(
                           padding: EdgeInsets.symmetric(
                               vertical:
-                                  MediaQuery.of(context).padding.vertical),
+                              MediaQuery.of(context).padding.vertical),
                           child: Column(children: [
                             Visibility(
                               visible: isNoDateDialogBoxOpen == true,
                               child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
                                       width: MediaQuery.of(context).size.width *
@@ -292,7 +313,7 @@ class _AddEmployeeState extends State<AddEmployees> {
                               visible: isNoDateDialogBoxOpen == false,
                               child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
                                       width: MediaQuery.of(context).size.width *
@@ -325,7 +346,7 @@ class _AddEmployeeState extends State<AddEmployees> {
                               visible: isNoDateDialogBoxOpen == false,
                               child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
                                       width: MediaQuery.of(context).size.width *
@@ -362,8 +383,8 @@ class _AddEmployeeState extends State<AddEmployees> {
                               formatButtonShowsNext: true,
                               formatButtonVisible: false,
                               titleCentered: true),
-                          firstDay: DateTime(2022),
-                          lastDay: DateTime(2024),
+                          firstDay: DateTime(1960),
+                          lastDay: DateTime.now().add(Duration(days: 365)),
                           focusedDay: _focusedDay,
                           calendarFormat: _calendarFormat,
                           onDaySelected: (selectedDay, focusedDay) {
@@ -406,7 +427,7 @@ class _AddEmployeeState extends State<AddEmployees> {
                                       _selectedDate == null
                                           ? "Today"
                                           : DateFormat('dd MMM yyyy')
-                                              .format(_focusedDay),
+                                          .format(_focusedDay),
                                     ),
                                   ),
                                   Spacer(),
@@ -418,11 +439,11 @@ class _AddEmployeeState extends State<AddEmployees> {
                                       child: const Text("Cancel")),
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
+                                    EdgeInsets.symmetric(horizontal: 10),
                                     child: ElevatedButton(
                                         onPressed: () {
-                                          if (_focusedDay != DateTime.now() &&
-                                              isNoDateDialogBoxOpen == false) {
+                                          /*
+                                          if (_focusedDay != DateTime.now()) {
                                             setState(() {
                                               _fromDate =
                                                   DateFormat('dd MMM yyyy')
@@ -430,10 +451,19 @@ class _AddEmployeeState extends State<AddEmployees> {
                                             });
                                             Navigator.pop(context);
                                           }
+
+                                           */
                                           if (_focusedDay != DateTime.now() &&
                                               isNoDateDialogBoxOpen == true) {
                                             setState(() {
                                               _toDate =
+                                                  DateFormat('dd MMM yyyy')
+                                                      .format(_focusedDay);
+                                            });
+                                            Navigator.pop(context);
+                                          }else {
+                                            setState(() {
+                                              _fromDate =
                                                   DateFormat('dd MMM yyyy')
                                                       .format(_focusedDay);
                                             });
@@ -468,7 +498,7 @@ class _AddEmployeeState extends State<AddEmployees> {
 
 
   void _onAddEmployee(BuildContext context, EmployeeEntity employee) {
+
     BlocProvider.of<LocalEmployeeBloc>(context).add(SaveEmployee(employee));
   }
 }
-
